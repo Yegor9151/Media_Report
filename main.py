@@ -14,10 +14,8 @@ from datetime import date
 # Период
 period = last_month() if date.today().day <= 15 else half_month()
 
-
 # Создание папок
 create_dir(PATH_TO_SOURCE)
-
 
 # google collector
 info = open_file(INFO)
@@ -27,8 +25,10 @@ collector = Collector(period, info, SCOPES, KEY, TITLE, PATH_TO_SOURCE)
 
 
 # COLLECT
+# UTM-base
 df_utm_base = collector.collect_utm()
 
+# BQ
 query = collector.assemble_query(
     template_query=open_file(TEMPLATE_BIGQUERY),
     lbls=df_utm_base['Source'].unique()
@@ -36,4 +36,7 @@ query = collector.assemble_query(
 
 df = collector.collect_BQ(query)
 
-print(df)
+# DWH
+
+
+# PROCESS
